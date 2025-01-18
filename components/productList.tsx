@@ -5,6 +5,7 @@ import { Product } from "../types";
 import { supabase } from "../lib/supabaseClient";  // Import the Supabase client
 import Link from 'next/link'
 
+
 // Fetcher function for SWR
 const fetchProducts = async () => {
   const { data, error } = await supabase.from("products").select("*");
