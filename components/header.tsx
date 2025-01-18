@@ -2,10 +2,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ShoppingCart as ShoppingCartIcon } from "@mui/icons-material";
+import { Button } from "@mui/material";
 
 export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [cartQuantity, setCartQuantity] = useState(5); // Example cart quantity
+  const [cartQuantity, setCartQuantity] = useState(0); // Example cart quantity
 
   const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 
@@ -21,38 +22,6 @@ export default function Header() {
       {/* Desktop Navbar */}
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          {/* Logo */}
-          <div>
-            <Link href="/" passHref>
-              <span className="text-2xl font-semibold text-gray-800 cursor-pointer">
-                Logo
-              </span>
-            </Link>
-          </div>
-
-          {/* Desktop Navigation Links */}
-          <div className="hidden md:flex space-x-8">
-            {navLinks.map((link) => (
-              <Link key={link.label} href={link.href} className="text-gray-800 hover:text-blue-600">
-                {link.label}
-              </Link>
-            ))}
-          </div>
-
-          {/* Shopping Cart Icon */}
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <button>
-                <ShoppingCartIcon className="text-gray-800" />
-              </button>
-              {cartQuantity > 0 && (
-                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  {cartQuantity}
-                </span>
-              )}
-            </div>
-          </div>
-
           {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button onClick={toggleDrawer} className="text-gray-800">
@@ -72,15 +41,48 @@ export default function Header() {
               </svg>
             </button>
           </div>
+          {/* Logo */}
+          <div>
+            <Link href="/" passHref>
+              <span className="text-2xl font-semibold text-gray-800 cursor-pointer">
+                Logo
+              </span>
+            </Link>
+          </div>
+
+          {/* Desktop Navigation Links */}
+          <div className="hidden md:flex space-x-8">
+            {navLinks.map((link) => (
+              <Link key={link.label} href={link.href} className="text-gray-800 hover:text-blue-600">
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Shopping Cart Icon */}
+          <Link href='/cart'>
+          <div className="flex items-center space-x-4">
+            <div className="relative">
+              <button>
+                <ShoppingCartIcon className="text-gray-800" />
+              </button>
+              {cartQuantity > 0 && (
+                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartQuantity}
+                </span>
+              )}
+            </div>
+          </div>
+          </Link>
         </div>
       </nav>
 
       {/* Mobile Drawer */}
       {drawerOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 md:hidden">
-          <div className="absolute top-0 right-0 w-64 bg-white shadow-lg h-full">
+          <div className="absolute top-0 left-0 w-64 bg-white shadow-lg h-full">
             <div className="flex justify-end p-4">
-              <button onClick={toggleDrawer}>
+              <Button onClick={toggleDrawer}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -95,7 +97,7 @@ export default function Header() {
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
-              </button>
+              </Button>
             </div>
             <div className="space-y-6 px-4 py-8">
               {navLinks.map((link) => (
