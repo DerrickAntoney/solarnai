@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 
 export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [cartQuantity, setCartQuantity] = useState(0); // Example cart quantity
+  const cartQuantity = 0; // Example cart quantity
 
   const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 

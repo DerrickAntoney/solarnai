@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
 import { Product } from "../../types";
 import {Button } from "@mui/material";
+import Image from "next/image";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -51,7 +52,7 @@ const ProductDetail = () => {
   return (
     <div>
       <h1>{product.title}</h1>
-      <img src={product.img} alt={product.title} style={{ width: "300px", height: "auto" }} />
+      <Image src={product.img} alt={product.title} style={{ width: "300px", height: "auto" }} />
       <p>{product.description}</p>
       <p>Price: ${product.price}</p>
       <div>

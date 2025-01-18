@@ -20,7 +20,7 @@
 import { useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { Radio, RadioGroup } from '@headlessui/react'
-import image1 from '../../public/solarprod1.jpg'
+import Image from 'next/image'
 
 const product = {
   name: 'Basic Tee 6-Pack',
@@ -84,7 +84,6 @@ function classNames(...classes: string[]) {
 
 export default function Example() {
   const [selectedColor, setSelectedColor] = useState(product.colors[0])
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2])
   const [mainImage, setMainImage] = useState(product.images[0])
 
   return (
@@ -92,25 +91,25 @@ export default function Example() {
       <div className="pt-6">
         {/* Image gallery */}
         <div className="mx-auto mt-6 max-w-2xl px-3 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
-          {/* <img
+          {/* <Image
             alt={product.images[0].alt}
             src={product.images[0].src}
             className="hidden aspect-[3/4] size-full rounded-lg object-cover lg:block"
           />
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-            <img
+            <Image
               alt={product.images[1].alt}
               src={product.images[1].src}
               className="aspect-[3/2] size-full rounded-lg object-cover"
             />
-            <img
+            <Image
               alt={product.images[2].alt}
               src={product.images[2].src}
               className="aspect-[3/2] size-full rounded-lg object-cover"
             />
           </div> */}
           <div>
-          <img
+          <Image
             alt={mainImage.alt}
             src={mainImage.src}
             className="aspect-[4/5] size-full object-cover sm:rounded-lg lg:aspect-[3/4]"
@@ -118,7 +117,7 @@ export default function Example() {
           <div className='grid grid-cols-4 gap-4 pt-2'>
             {product.images.map((image, index)=> (
               <button key={index} className='w-20 h-20 rounded-lg overflow-hidden border-2 border-transparent hover:border-x-orange-500 focus:outline-none focus:border-orange-500' onClick={() => setMainImage(image)}>
-                    <img
+                    <Image
                   alt={image.alt}
                   src={image.src}
                   className="aspect-[1] size-full rounded-lg object-cover"

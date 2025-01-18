@@ -4,6 +4,7 @@ import useSWR from "swr"; // Import SWR
 import { Product } from "../types";
 import { supabase } from "../lib/supabaseClient";  // Import the Supabase client
 import Link from 'next/link'
+import Image from "next/image";
 
 
 // Fetcher function for SWR
@@ -45,7 +46,7 @@ export default function ProductList() {
         >
           <div className="h-56 w-full">
             <Link href={`/${product.id}`}>
-              <img className="mx-auto h-full" src={product.img} alt={product.title} />
+              <Image className="mx-auto h-full" src={product.img} alt={product.title} />
             </Link>
           </div>
           <div className="pt-6">
