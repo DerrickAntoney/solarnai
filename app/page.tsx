@@ -35,16 +35,17 @@ const Home = () => {
         color="primary"
         aria-label="whatsapp"
         href="https://wa.me/+254740618520" // Replace with your WhatsApp link
-        className="absolute bottom-20 right-10"
+        className="fixed bottom-6 right-6 sm:bottom-10 sm:right-10 z-10"
       >
         <WhatsAppIcon />
       </Fab>
 
+      {/* Floating Message Button */}
       <Fab
         color="primary"
         aria-label="message"
         href="sms:+254740618520" // Replace with your message link
-        className="absolute bottom-5 right-10"
+        className="fixed bottom-24 right-6 sm:bottom-10 sm:right-20 z-10"
       >
         <MessageIcon />
       </Fab>
