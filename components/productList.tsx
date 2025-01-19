@@ -5,10 +5,11 @@ import { Product } from "../types";
 import { supabase } from "../lib/supabaseClient";  // Import the Supabase client
 import Link from 'next/link'
 import Image from "next/image";
+import { cache } from "react";
 
 
 // Fetcher function for SWR
-const fetchProducts = async () => {
+const fetchProducts = cache(async () => {
   const { data, error } = await supabase.from("products").select("*");
 
   if (error) {
@@ -16,7 +17,7 @@ const fetchProducts = async () => {
   }
 
   return data; // Return fetched data
-};
+});
 
 export default function ProductList() {
   // Use SWR to fetch the products
