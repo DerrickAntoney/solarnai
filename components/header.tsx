@@ -3,10 +3,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { ShoppingCart as ShoppingCartIcon } from "@mui/icons-material";
 import { Button } from "@mui/material";
+import { useCart } from "@/context/cartContext";
 
 export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const cartQuantity = 0; // Example cart quantity
+  const { getTotalQuantity } = useCart();
 
   const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 
@@ -66,9 +67,9 @@ export default function Header() {
               <button>
                 <ShoppingCartIcon className="text-gray-800" />
               </button>
-              {cartQuantity > 0 && (
-                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  {cartQuantity}
+              {getTotalQuantity() > 0 && (
+                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center z-20">
+                  {getTotalQuantity()}
                 </span>
               )}
             </div>

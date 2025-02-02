@@ -1,13 +1,15 @@
 'use client'
 
 import Header from '@/components/header'
-import ProductList from '@/components/productList'
-import React from 'react'
-import { Fab } from '@mui/material';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import MessageIcon from '@mui/icons-material/Message';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
+import FloatingButton from '@/components/floatingButton';
+import { CartProvider } from '@/context/cartContext';
+import Cart from '@/components/cart';
+import CartTwo from '@/components/cartTwo';
+import TitlebarImageList from '@/components/banner';
+import ScrollableTabsButtonForce from '@/components/tabs';
+import ProductList from '@/components/productList';
 
 
 const theme = createTheme({
@@ -24,32 +26,21 @@ const theme = createTheme({
 const Home = () => {
   return (
     <ThemeProvider theme={theme}>
+    <CartProvider>
     <CssBaseline />
-    <div className="relative min-h-screen">
+    <div>
       <Header/>
+      <ScrollableTabsButtonForce/>
+      <TitlebarImageList/>
       <ProductList/>
       <ProductList/>
       <ProductList/>
       <ProductList/>
-      <Fab
-        color="primary"
-        aria-label="whatsapp"
-        href="https://wa.me/+254740618520" // Replace with your WhatsApp link
-        className="fixed bottom-6 right-6 sm:bottom-10 sm:right-10 z-10"
-      >
-        <WhatsAppIcon />
-      </Fab>
-
-      {/* Floating Message Button */}
-      <Fab
-        color="primary"
-        aria-label="message"
-        href="sms:+254740618520" // Replace with your message link
-        className="fixed bottom-24 right-6 sm:bottom-10 sm:right-20 z-10"
-      >
-        <MessageIcon />
-      </Fab>
+      <Cart/>
+      <CartTwo id={0} quantity={0} />
+      <FloatingButton/>
     </div>
+    </CartProvider>
     </ThemeProvider>
   )
 }
