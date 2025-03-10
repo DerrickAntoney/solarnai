@@ -107,7 +107,7 @@ const Checkout = () => {
                 <label htmlFor="select-city-input-3" className="block text-sm font-medium text-gray-900 dark:text-white"> City/Town* </label>
               </div>
               <select id="select-city-input-3" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
-                <option selected>San Francisco</option>
+                <option value="SF" defaultValue="SF">San Francisco</option>
                 <option value="NY">New York</option>
                 <option value="LA">Los Angeles</option>
                 <option value="CH">Chicago</option>

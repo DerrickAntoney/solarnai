@@ -1,9 +1,19 @@
 // lib/supabaseClient.ts
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-// Define types for environment variables
-const supabaseUrl: string = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey: string = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+console.log(process.env.NEXT_PUBLIC_SUPABASE_URL);
 
-// Create and export the Supabase client with the correct types
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl) {
+  throw new Error('NEXT_PUBLIC_SUPABASE_URL is not defined.');
+}
+
+if (!supabaseKey) {
+  throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEY is not defined.');
+}
+
+console.log(supabaseUrl);
+
 export const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);

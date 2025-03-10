@@ -1,20 +1,3 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    theme: {
-      extend: {
-        gridTemplateRows: {
-          '[auto,auto,1fr]': 'auto auto 1fr',
-        },
-      },
-    },
-  }
-  ```
-*/
 'use client'
 
 import { useState } from 'react'
@@ -32,19 +15,19 @@ const product = {
   ],
   images: [
     {
-      src: 'solarprod1.jpg',
+      src: '/hero/hero1.jpg',
       alt: 'Two each of gray, white, and black shirts laying flat.',
     },
     {
-      src: 'solarprod1.jpg',
+      src: '/hero/hero2.jpg',
       alt: 'Model wearing plain black basic tee.',
     },
     {
-      src: '#',
+      src: '/hero/hero2.jpg',
       alt: 'Model wearing plain gray basic tee.',
     },
     {
-      src: 'solarprod1.jpg',
+      src: '/hero/hero3.jpg',
       alt: 'Model wearing plain white basic tee.',
     },
   ],
@@ -112,7 +95,9 @@ export default function Example() {
           <Image
             alt={mainImage.alt}
             src={mainImage.src}
-            className="aspect-[4/5] size-full object-cover sm:rounded-lg lg:aspect-[3/4]"
+            width={600}
+            height={200}
+            className="object-cover rounded-lg"
           />
           <div className='grid grid-cols-4 gap-4 pt-2'>
             {product.images.map((image, index)=> (
@@ -120,6 +105,8 @@ export default function Example() {
                     <Image
                   alt={image.alt}
                   src={image.src}
+                  width={200}
+                  height={200}
                   className="aspect-[1] size-full rounded-lg object-cover"
                 />
               </button>  

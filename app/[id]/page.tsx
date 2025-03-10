@@ -52,7 +52,7 @@ const ProductDetail = () => {
   return (
     <div>
       <h1>{product.title}</h1>
-      <Image src={product.img} alt={product.title} style={{ width: "300px", height: "auto" }} />
+      <Image src={product.img} alt={product.title} width={300} height={200} className=" object-cover"/>
       <p>{product.description}</p>
       <p>Price: ${product.price}</p>
       <div>
