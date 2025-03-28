@@ -6,6 +6,7 @@ export interface Product {
     quantity: number;
     img: string;
     price: number;
+    images:string;
   }
   
   // Define the type for an item in the cart
