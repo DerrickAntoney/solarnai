@@ -53,7 +53,7 @@ export default function ProductList() {
       <div className="relative h-56 w-full">
         <Link href={`/${product.id}`}>
           <Image
-            src={product.img} // Assuming product.img is a valid image URL
+            src={product.img || product.images[0]} // Assuming product.img is a valid image URL
             alt={product.title}
             fill
         style={{

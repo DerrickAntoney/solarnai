@@ -7,14 +7,10 @@ export function Footer() {
     {
       title: "Categories",
       links: [
-        "Vegetables & Fruits",
-        "Breakfast & instant food",
-        "Bakery & Biscuits",
-        "Atta, rice & dal",
-        "Sauces & spreads",
-        "Baby care",
-        "Cleaning essentials",
-        "Personal care",
+        "Home Lighting Systems",
+        "Street Lights",
+        "Charge Controllers",
+        "Solar Panels",
       ],
     },
     {
@@ -36,15 +32,9 @@ export function Footer() {
     {
       title: "More Categories",
       links: [
-        "Dairy, bread & eggs",
-        "Cold drinks & juices",
-        "Tea, coffee & drinks",
-        "Masala, oil & more",
-        "Chicken, meat & fish",
-        "Paan corner",
-        "Pharma & wellness",
-        "Home & office",
-        "Pet care",
+        "Inverters",
+        "Batteries",
+        "Solar Floodlights",
       ],
     },
   ]
@@ -71,7 +61,7 @@ export function Footer() {
 
         <div className="py-4 border-t flex flex-col md:flex-row justify-between items-center">
           <div className="text-xs text-gray-600 mb-4 md:mb-0">
-            © 2023 FreshCart eCommerce HTML Template. All rights reserved. Powered by Codescandy.
+            © 2024-{new Date().getFullYear()} Solarmania. All rights reserved. Powered by Codescandy.
           </div>
           <div className="flex items-center gap-4">
             <span className="text-xs">Payment Partners</span>

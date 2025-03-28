@@ -19,14 +19,13 @@ export function FeaturedCategories() {
   }
 
   const categories: Category[] = [
-    { name: "Instant Food", image: "/hero/hero3.jpg" },
-    { name: "Tea, Coffee & Drinks", image: "/hero/hero1.jpg" },
-    { name: "Rice, Flour & Oil", image: "/hero/hero2.jpg" },
-    { name: "Baby Care", image: "/hero/hero3.jpg" },
-    { name: "Chicken, Meat & Fish", image: "/hero/hero1.jpg" },
-    { name: "Cleaning Essentials", image: "/hero/hero2.jpg" },
-    { name: "Frozen Foods", image: "/hero/hero3.jpg" },
-    { name: "Health & Wellness", image: "/hero/hero1.jpg" },
+    { name: "Batteries", image: "/hero/hero3.jpg" },
+    { name: "Inverters", image: "/hero/hero1.jpg" },
+    { name: "Charge Controllers", image: "/hero/hero2.jpg" },
+    { name: "Solar Panels", image: "/hero/hero3.jpg" },
+    { name: "Solar Floodlights", image: "/hero/hero1.jpg" },
+    { name: "Street Lights", image: "/hero/hero2.jpg" },
+    { name: "Home Lighting Systems", image: "/hero/hero3.jpg" },
   ]
 
   const nextCategory = () => {
