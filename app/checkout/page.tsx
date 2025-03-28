@@ -8,7 +8,7 @@ const Checkout = () => {
   today.setDate(today.getDate() + 2);
 
   // Format the date as "Friday, 13 Dec 2023"
-  const options = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
+  const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
   const formattedDate = today.toLocaleDateString('en-GB', options);
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
