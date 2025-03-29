@@ -1,15 +1,35 @@
-import React from 'react'
+"use client"
+
+import type { FormEvent } from "react"
+import { useRouter } from "next/navigation"
+import { useDeliveryAddress } from "../../context/delivery-address-context"
+import { usePaymentMethod } from "../../context/payment-method-context"
+import { useDeliveryMethod } from "../../context/delivery-method-context"
+import { useOrder } from "../../context/order-context"
 
 const Checkout = () => {
-  // Get today's date
-  const today = new Date();
+  const router = useRouter()
+  const { deliveryAddress, setDeliveryAddress } = useDeliveryAddress()
+  const { paymentMethod, setPaymentMethod } = usePaymentMethod()
+  const { deliveryMethod, setDeliveryMethod, getDeliveryDate } = useDeliveryMethod()
+  const { getSubtotal, getTax, getTotal, voucher, setVoucher, savings, setSavings } = useOrder()
 
-  // Add 2 days to the current date
-  today.setDate(today.getDate() + 2);
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
 
-  // Format the date as "Friday, 13 Dec 2023"
-  const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
-  const formattedDate = today.toLocaleDateString('en-GB', options);
+    // Save all current state to localStorage before navigation
+    localStorage.setItem("deliveryAddress", JSON.stringify(deliveryAddress))
+    localStorage.setItem("paymentMethod", paymentMethod)
+    localStorage.setItem("deliveryMethod", deliveryMethod)
+    localStorage.setItem("orderVoucher", voucher)
+    localStorage.setItem("orderSavings", savings.toString())
+    localStorage.setItem("orderItems", JSON.stringify(getSubtotal()))
+
+    // Navigate to order summary page
+    router.push("/order-summary")
+  }
+  
+  const formattedDate = getDeliveryDate();
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
   <form action="#" className="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -43,24 +63,29 @@ const Checkout = () => {
     <div className="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
       <div className="min-w-0 flex-1 space-y-8">
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Delivery Details</h2>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Delivery Address</h2>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label htmlFor="your_name" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Your name* </label>
-              <input type="text" id="your_name" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="Bonnie Green" required />
+              <input type="text" id="your_name" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="Bonnie Green" value={deliveryAddress.name}
+                    onChange={(e) => setDeliveryAddress({ ...deliveryAddress, name: e.target.value })}
+                    required />
             </div>
 
             <div>
               <label htmlFor="your_email" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Your email* </label>
-              <input type="email" id="your_email" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="name@flowbite.com" required />
+              <input type="email" id="your_email" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="name@gmail.com" value={deliveryAddress.email}
+                    onChange={(e) => setDeliveryAddress({ ...deliveryAddress, email: e.target.value })}
+                    required />
             </div>
 
             <div>
               <div className="mb-2 flex items-center gap-2">
                 <label htmlFor="select-country-input-3" className="block text-sm font-medium text-gray-900 dark:text-white"> County* </label>
               </div>
-              <select id="select-country-input-3" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
+              <select id="select-country-input-3" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" value={deliveryAddress.county}
+                    onChange={(e) => setDeliveryAddress({ ...deliveryAddress, county: e.target.value })}>
                 <option defaultValue="Nbo">Nairobi</option>
                 <option value="Bar">Baringo</option>
                 <option value="Bom">Bomet</option>
@@ -113,7 +138,9 @@ const Checkout = () => {
 
             <div>
               <label htmlFor="your_name" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> City/Town/Estate* </label>
-              <input type="text" id="your_name" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="Bonnie Green" required />
+              <input type="text" id="your_name" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="Utawala" value={deliveryAddress.city}
+                    onChange={(e) => setDeliveryAddress({ ...deliveryAddress, city: e.target.value })}
+                    required />
             </div>
 
             <div>
@@ -126,7 +153,9 @@ const Checkout = () => {
                   </svg>
                 </button>
                 <div className="relative w-full">
-                  <input type="text" id="phone-input" className="z-20 block w-full rounded-e-lg border border-s-0 border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:border-s-gray-700  dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500" placeholder="712345678" required />
+                  <input type="text" id="phone-input" className="z-20 block w-full rounded-e-lg border border-s-0 border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:border-s-gray-700  dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500" placeholder="0712345678"  value={deliveryAddress.phoneNumber}
+                        onChange={(e) => setDeliveryAddress({ ...deliveryAddress, phoneNumber: e.target.value })}
+                        required />
                 </div>
               </div>
             </div>
@@ -141,7 +170,8 @@ const Checkout = () => {
                   </svg>
                 </button>
                 <div className="relative w-full">
-                  <input type="text" id="phone-input" className="z-20 block w-full rounded-e-lg border border-s-0 border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:border-s-gray-700  dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500" placeholder="712345678" required />
+                  <input type="text" id="phone-input" className="z-20 block w-full rounded-e-lg border border-s-0 border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:border-s-gray-700  dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500" placeholder="0712345678" value={deliveryAddress.otherNumber}
+                        onChange={(e) => setDeliveryAddress({ ...deliveryAddress, otherNumber: e.target.value })} />
                 </div>
               </div>
             </div>
@@ -164,7 +194,8 @@ const Checkout = () => {
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
               <div className="flex items-start">
                 <div className="flex h-5 items-center">
-                  <input id="credit-card" aria-describedby="credit-card-text" type="radio" name="payment-method" value="" className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" checked />
+                  <input id="credit-card" aria-describedby="credit-card-text" type="radio" name="payment-method" value="" className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"  checked={paymentMethod === "mpesa"}
+                        onChange={() => setPaymentMethod("mpesa")} />
                 </div>
 
                 <div className="ms-4 text-sm">
@@ -174,7 +205,7 @@ const Checkout = () => {
               </div>
 
               <div className="mt-4 flex items-center gap-2">
-                <button type="button" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">Delete</button>
+                <button type="button" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">View</button>
 
                 <div className="h-3 w-px shrink-0 bg-gray-200 dark:bg-gray-700"></div>
 
@@ -184,7 +215,8 @@ const Checkout = () => {
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
               <div className="flex items-start">
                 <div className="flex h-5 items-center">
-                  <input id="pay-on-delivery" aria-describedby="pay-on-delivery-text" type="radio" name="payment-method" value="" className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+                  <input id="pay-on-delivery" aria-describedby="pay-on-delivery-text" type="radio" name="payment-method" value="" className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" checked={paymentMethod === "delivery"}
+                        onChange={() => setPaymentMethod("delivery")}/>
                 </div>
 
                 <div className="ms-4 text-sm">
@@ -194,17 +226,13 @@ const Checkout = () => {
               </div>
 
               <div className="mt-4 flex items-center gap-2">
-                <button type="button" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">Delete</button>
-
-                <div className="h-3 w-px shrink-0 bg-gray-200 dark:bg-gray-700"></div>
-
-                <button type="button" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">Edit</button>
               </div>
             </div>
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
               <div className="flex items-start">
                 <div className="flex h-5 items-center">
-                  <input id="paypal-2" aria-describedby="paypal-text" type="radio" name="payment-method" value="" className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+                  <input id="paypal-2" aria-describedby="paypal-text" type="radio" name="payment-method" value="" className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" checked={paymentMethod === "credit-card"}
+                        onChange={() => setPaymentMethod("credit-card")} />
                 </div>
 
                 <div className="ms-4 text-sm">
@@ -214,7 +242,7 @@ const Checkout = () => {
               </div>
 
               <div className="mt-4 flex items-center gap-2">
-                <button type="button" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">Delete</button>
+                <button type="button" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">View</button>
 
                 <div className="h-3 w-px shrink-0 bg-gray-200 dark:bg-gray-700"></div>
 
@@ -234,12 +262,13 @@ const Checkout = () => {
             <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
               <div className="flex items-start">
                 <div className="flex h-5 items-center">
-                  <input id="dhl" aria-describedby="dhl-text" type="radio" name="delivery-method" value="" className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" checked />
+                  <input id="dhl" aria-describedby="dhl-text" type="radio" name="delivery-method" value="" className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" checked={deliveryMethod === "regular"}
+                        onChange={() => setDeliveryMethod("regular")} />
                 </div>
 
                 <div className="ms-4 text-sm">
                   <label htmlFor="dhl" className="font-medium leading-none text-gray-900 dark:text-white"> Kes 300 - 1500 Regular Delivery </label>
-                  <p id="dhl-text" className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">Get it by {formattedDate}</p>
+                  <p id="dhl-text" className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400" suppressHydrationWarning>Get it by {formattedDate}</p>
                 </div>
               </div>
             </div>
@@ -247,7 +276,8 @@ const Checkout = () => {
             <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
               <div className="flex items-start">
                 <div className="flex h-5 items-center">
-                  <input id="express" aria-describedby="express-text" type="radio" name="delivery-method" value="" className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+                  <input id="express" aria-describedby="express-text" type="radio" name="delivery-method" value="" className="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" checked={deliveryMethod === "express"}
+                        onChange={() => setDeliveryMethod("express")}/>
                 </div>
 
                 <div className="ms-4 text-sm">
@@ -262,8 +292,14 @@ const Checkout = () => {
         <div>
           <label htmlFor="voucher" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Enter a gift card, voucher or promotional code </label>
           <div className="flex max-w-md items-center gap-4">
-            <input type="text" id="voucher" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="" required />
-            <button type="button" className="flex items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Apply</button>
+            <input type="text" id="voucher" className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder=""
+                  value={voucher}
+                  onChange={(e) => setVoucher(e.target.value)} />
+            <button type="button" className="flex items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onClick={() => {
+                    if (voucher === "DISCOUNT10") {
+                      setSavings(1000)
+                    }
+                  }}>Apply</button>
           </div>
         </div>
       </div>
@@ -273,7 +309,7 @@ const Checkout = () => {
           <div className="-my-3 divide-y divide-gray-200 dark:divide-gray-800">
             <dl className="flex items-center justify-between gap-4 py-3">
               <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Subtotal</dt>
-              <dd className="text-base font-medium text-gray-900 dark:text-white">$8,094.00</dd>
+              <dd className="text-base font-medium text-gray-900 dark:text-white">Kes{(getSubtotal() / 100).toFixed(2)}</dd>
             </dl>
 
             <dl className="flex items-center justify-between gap-4 py-3">
@@ -282,24 +318,24 @@ const Checkout = () => {
             </dl>
 
             <dl className="flex items-center justify-between gap-4 py-3">
-              <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Store Pickup</dt>
-              <dd className="text-base font-medium text-gray-900 dark:text-white">$99</dd>
+              <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Delivery Fee</dt>
+              <dd className="text-base font-medium text-gray-900 dark:text-white">Kes 300</dd>
             </dl>
 
             <dl className="flex items-center justify-between gap-4 py-3">
               <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Tax</dt>
-              <dd className="text-base font-medium text-gray-900 dark:text-white">$199</dd>
+              <dd className="text-base font-medium text-gray-900 dark:text-white">Kes{(getTax() / 100).toFixed(2)}</dd>
             </dl>
 
             <dl className="flex items-center justify-between gap-4 py-3">
               <dt className="text-base font-bold text-gray-900 dark:text-white">Total</dt>
-              <dd className="text-base font-bold text-gray-900 dark:text-white">$8,392.00</dd>
+              <dd className="text-base font-bold text-gray-900 dark:text-white">Kes{(getTotal() / 100).toFixed(2)}</dd>
             </dl>
           </div>
         </div>
 
         <div className="space-y-3">
-          <button type="submit" className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Proceed to Payment</button>
+          <button type="submit" className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onClick={handleSubmit}>Proceed to Payment</button>
 
           <p className="text-sm font-normal text-gray-500 dark:text-gray-400">One or more items in your cart require an account. <a href="#" title="" className="font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">Sign in or create an account now.</a>.</p>
         </div>

@@ -18,6 +18,7 @@ import { PromoBanners } from '@/components/promotions/promo-banners';
 import { PopularProducts } from '@/components/products/popular-products';
 import { DailyBestSells } from '@/components/products/daily-best-sells';
 import { FeatureSection } from '@/components/features/feature-section';
+import { CheckoutProvider } from '@/context/checkout-provider';
 
 
 const theme = createTheme({
@@ -34,6 +35,7 @@ const theme = createTheme({
 const Home = () => {
   return (
     <ThemeProvider theme={theme}>
+    <CheckoutProvider>
     <CartProvider>
     <CssBaseline />
     <div className="flex flex-col min-h-screen">
@@ -76,6 +78,7 @@ const Home = () => {
       
     </div>
     </CartProvider>
+    </CheckoutProvider>
     </ThemeProvider>
   )
 }
